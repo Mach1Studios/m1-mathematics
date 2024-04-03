@@ -44,20 +44,17 @@ public:
     /**
      * @brief Create a Float3, whose components are this Float3's components, proportionally remapped from the
      * input range to the given output range.
-     * @return
      */
     Float3 Map(float from_min, float from_max, float to_min, float to_max);
 
     /**
-     * Check whether this Float3 is equal to the given Float3 within a margin of error
-     * @param rhs
-     * @return
+     * @brief Check whether this Float3 is equal to the given Float3 within a margin of error
      */
     bool IsApproximatelyEqual(const Float3 &rhs) const;
 
     /**
-     * Get the string representation of this Float3
-     * @return
+     * @brief Get the string representation of this Float3
+     * @return string of the format "Float3(`x-component`, `y-component`, `z-component`)"
      */
     std::string ToString() const;
 

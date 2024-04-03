@@ -106,6 +106,7 @@ Quaternion Quaternion::Normalized() const {
     return *this / Length();
 }
 
+
 Quaternion Quaternion::Inversed() const {
     return {m_qw, -m_qx, -m_qy, -m_qz};
 }

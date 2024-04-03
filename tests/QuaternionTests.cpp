@@ -61,7 +61,7 @@ TEST(QuaternionTests, Inverse) {
 TEST(QuaternionTests, Multiplication) {
     using namespace Mach1;
 
-    Float3 testVec = Float3{45, 30, 10};
+    Float3 testVec = Float3{45, 30, -10};
     Float3 testVecRads = testVec.EulerRadians();
 
     auto pitch = testVecRads[0];
@@ -69,44 +69,46 @@ TEST(QuaternionTests, Multiplication) {
     auto roll = testVecRads[2];
 
     Float3 euler_p(pitch, 0.0, 0.0);
-    Quaternion q_p = Quaternion::FromEulerRadians(euler_p);
-    Float3 conv_p = q_p.ToEulerRadians();
-    ASSERT_TRUE(conv_p.IsApproximatelyEqual(euler_p)) << euler_p.ToString() << " != " << conv_p.ToString();
-
     Float3 euler_y(0.0, yaw, 0.0);
-    Quaternion q_y = Quaternion::FromEulerRadians(euler_y);
-    Float3 conv_y = q_y.ToEulerRadians();
-    ASSERT_TRUE(conv_y.IsApproximatelyEqual(euler_y)) << euler_y.ToString() << " != " << conv_y.ToString();
-
     Float3 euler_r(0.0, 0.0, roll);
+    Float3 euler_yp(pitch, yaw, 0.0);
+    Float3 euler_yr(0.0, yaw, roll);
+    Float3 euler_pr(pitch, 0.0, roll);
+    Float3 euler_ypr(pitch, yaw, roll);
+
+    Quaternion q_p = Quaternion::FromEulerRadians(euler_p);
+    Quaternion q_y = Quaternion::FromEulerRadians(euler_y);
     Quaternion q_r = Quaternion::FromEulerRadians(euler_r);
+    Quaternion q_yp = Quaternion::FromEulerRadians(euler_yp);
+    Quaternion q_yr = Quaternion::FromEulerRadians(euler_yr);
+    Quaternion q_pr = Quaternion::FromEulerRadians(euler_pr);
+    Quaternion q_ypr = Quaternion::FromEulerRadians(euler_ypr);
+
+    Float3 conv_p = q_p.ToEulerRadians();
+    Float3 conv_y = q_y.ToEulerRadians();
     Float3 conv_r = q_r.ToEulerRadians();
+    Float3 conv_yp = q_yp.ToEulerRadians();
+    Float3 conv_yr = q_yr.ToEulerRadians();
+    Float3 conv_pr = q_pr.ToEulerRadians();
+    Float3 conv_ypr = q_ypr.ToEulerRadians();
+
+    Float3 convTestVec = conv_ypr.EulerDegrees();
+
+    ASSERT_TRUE(conv_p.IsApproximatelyEqual(euler_p)) << euler_p.ToString() << " != " << conv_p.ToString();
+    ASSERT_TRUE(conv_y.IsApproximatelyEqual(euler_y)) << euler_y.ToString() << " != " << conv_y.ToString();
     ASSERT_TRUE(conv_r.IsApproximatelyEqual(euler_r)) << euler_r.ToString() << " != " << conv_r.ToString();
 
-    Float3 euler_yp(pitch, yaw, 0.0);
-    Quaternion q_yp = Quaternion::FromEulerRadians(euler_yp);
-    Float3 conv_yp = q_yp.ToEulerRadians();
     ASSERT_TRUE(q_yp.IsApproximatelyEqual(q_y * q_p));
     ASSERT_TRUE(conv_yp.IsApproximatelyEqual(euler_yp)) << euler_yp.ToString() << " != " << conv_yp.ToString();
 
-    Float3 euler_yr(0.0, yaw, roll);
-    Quaternion q_yr = Quaternion::FromEulerRadians(euler_yr);
-    Float3 conv_yr = q_yr.ToEulerRadians();
     ASSERT_TRUE(q_yr.IsApproximatelyEqual(q_y * q_r));
     ASSERT_TRUE(conv_yr.IsApproximatelyEqual(euler_yr)) << euler_yr.ToString() << " != " << conv_yr.ToString();
 
-    Float3 euler_pr(pitch, 0.0, roll);
-    Quaternion q_pr = Quaternion::FromEulerRadians(euler_pr);
-    Float3 conv_pr = q_pr.ToEulerRadians();
     ASSERT_TRUE(q_pr.IsApproximatelyEqual(q_p * q_r));
     ASSERT_TRUE(conv_pr.IsApproximatelyEqual(euler_pr)) << euler_pr.ToString() << " != " << conv_pr.ToString();
 
-    Float3 euler_ypr(pitch, yaw, roll);
-    Quaternion q_ypr = Quaternion::FromEulerRadians(euler_ypr);
-    Float3 conv_ypr = q_ypr.ToEulerRadians();
     ASSERT_TRUE(q_ypr.IsApproximatelyEqual(q_y * q_p * q_r));
     ASSERT_TRUE(conv_ypr.IsApproximatelyEqual(euler_ypr)) << euler_ypr.ToString() << " != " << conv_ypr.ToString();
 
-    Float3 convTestVec = conv_ypr.EulerDegrees();
     ASSERT_TRUE(convTestVec.IsApproximatelyEqual(testVec)) << convTestVec.ToString() << " != " << testVec.ToString();
 }
