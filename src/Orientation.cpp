@@ -32,7 +32,7 @@ void Orientation::ApplyRotation(Float3 rotationRadians) {
 }
 
 void Orientation::Recenter() {
-    m_parent = GetGlobalRotationAsQuaternion().Inversed();
+    m_parent = m_local.Inversed();
 }
 
 void Orientation::Reset() {

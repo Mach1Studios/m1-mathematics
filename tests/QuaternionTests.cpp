@@ -49,6 +49,7 @@ TEST(QuaternionTests, EulerToQuatConversions) {
 TEST(QuaternionTests, Inverse) {
     using namespace Mach1;
 
+    Float3 zeroVec = {};
     Quaternion zeroQuat = {};
     ASSERT_EQ(zeroQuat, zeroQuat.Inversed());
 
@@ -56,6 +57,7 @@ TEST(QuaternionTests, Inverse) {
     Quaternion testQuat = Quaternion::FromEulerRadians(testVec.EulerRadians());
     Quaternion reverseTestQuat = testQuat.Inversed();
     ASSERT_TRUE(zeroQuat.IsApproximatelyEqual(testQuat * reverseTestQuat));
+    ASSERT_TRUE(zeroVec.IsApproximatelyEqual((testQuat * reverseTestQuat).ToEulerDegrees()));
 }
 
 TEST(QuaternionTests, Multiplication) {
