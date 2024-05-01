@@ -57,6 +57,24 @@ public:
      * @return string of the format "Float3(`x-component`, `y-component`, `z-component`)"
      */
     std::string ToString() const;
+    
+    /**
+     * @brief Get the Yaw value where yaw is a right handed rotation around the Z-axis.
+     *  Lowest value rotates to the right and Highest value rotates to the left
+     */
+    float GetYaw() const;
+    
+    /**
+     * @brief Get the Pitch value where pitch is a downward rotation around the Y-axis.
+     *  Lowest value rotates upward and Highest value rotates downward
+     */
+    float GetPitch() const;
+    
+    /**
+     * @brief Get the Roll value where roll is a right handed rotation around the X-axis.
+     *  Lowest value rotates to the right and Highest value rotates to the left
+     */
+    float GetRoll() const;
 
     const float &operator[](int axis) const;
     float &operator[](int axis);
