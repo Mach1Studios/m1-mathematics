@@ -48,5 +48,10 @@ target_link_libraries(${PROJECT_NAME}_tests
         m1_mathematics
         )
 
+# For MacOS M1+ ARM targets
+if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    set(CMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE PRE_TEST)
+endif()
+
 include(GoogleTest)
 gtest_discover_tests(${PROJECT_NAME}_tests)
