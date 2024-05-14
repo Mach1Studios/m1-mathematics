@@ -48,6 +48,10 @@ target_link_libraries(${PROJECT_NAME}_tests
         m1_mathematics
         )
 
+if(WIN32 OR MSVC OR MINGW)
+    add_compile_definitions(_USE_MATH_DEFINES)
+endif()
+
 # For MacOS M1+ ARM targets
 if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     set(CMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE PRE_TEST)

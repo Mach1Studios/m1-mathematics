@@ -2,6 +2,7 @@
 #include "m1_mathematics/MathUtility.h"
 #include <sstream>
 #include <cmath>
+#include <algorithm>
 
 using namespace Mach1;
 
