@@ -10,19 +10,16 @@
 
 using namespace Mach1;
 
-
-Float3::Float3() : m_x(0), m_y(0), m_z(0) {}
-
-Float3::Float3(float x, float y, float z) : m_x(x), m_y(y), m_z(z) {}
-
-Float3::Float3(float component) : m_x(component), m_y(component), m_z(component) {}
+Float3::Float3() : m_yaw(0), m_pitch(0), m_roll(0) {}
+Float3::Float3(float yaw, float pitch, float roll) : m_yaw(yaw), m_pitch(pitch), m_roll(roll) {}
+Float3::Float3(float component) : m_yaw(component), m_pitch(component), m_roll(component) {}
 
 float Float3::Length() const {
-    return sqrt(m_x * m_x + m_y * m_y + m_z * m_z);
+    return sqrt(m_yaw * m_yaw + m_pitch * m_pitch + m_roll * m_roll);
 }
 
 Float3 Float3::Normalized() const {
-    float length_squared = m_x * m_x + m_y * m_y + m_z * m_z;
+    float length_squared = m_yaw * m_yaw + m_pitch * m_pitch + m_roll * m_roll;
 
     if (length_squared == 0) {
         return {};
@@ -47,9 +44,9 @@ Float3 Float3::Map(float from_min, float from_max, float to_min, float to_max) {
 
 Float3 Float3::Clamped(Float3 min, Float3 max) const {
     return {
-            std::clamp(m_x, min.m_x, max.m_x),
-            std::clamp(m_y, min.m_y, max.m_y),
-            std::clamp(m_z, min.m_z, max.m_z)
+            std::clamp(m_yaw, min.m_yaw, max.m_yaw),
+            std::clamp(m_pitch, min.m_pitch, max.m_pitch),
+            std::clamp(m_roll, min.m_roll, max.m_roll)
     };
 }
 
@@ -64,27 +61,27 @@ Float3 Float3::EulerRadians() const {
 }
 
 bool Float3::IsApproximatelyEqual(const Float3 &rhs) const {
-    return MathUtility::IsApproximatelyEqual(m_x, rhs.m_x) &&
-           MathUtility::IsApproximatelyEqual(m_y, rhs.m_y) &&
-           MathUtility::IsApproximatelyEqual(m_z, rhs.m_z);
+    return MathUtility::IsApproximatelyEqual(m_yaw, rhs.m_yaw) &&
+           MathUtility::IsApproximatelyEqual(m_pitch, rhs.m_pitch) &&
+           MathUtility::IsApproximatelyEqual(m_roll, rhs.m_roll);
 }
 
 std::string Float3::ToString() const {
     std::stringstream s;
-    s << "Float3(" << m_x << ", " << m_y << ", " << m_z << ")";
+    s << "Float3(" << m_yaw << ", " << m_pitch << ", " << m_roll << ")";
     return s.str();
 }
 
 float Float3::GetYaw() const {
-    return m_y;
+    return m_yaw;
 }
 
 float Float3::GetPitch() const {
-    return m_x;
+    return m_pitch;
 }
 
 float Float3::GetRoll() const {
-    return m_z;
+    return m_roll;
 }
 
 // =====================================================================================================================
@@ -92,109 +89,109 @@ float Float3::GetRoll() const {
 // =====================================================================================================================
 
 Float3 &Float3::operator+=(const Float3 &rhs) {
-    m_x += rhs.m_x;
-    m_y += rhs.m_y;
-    m_z += rhs.m_z;
+    m_yaw += rhs.m_yaw;
+    m_pitch += rhs.m_pitch;
+    m_roll += rhs.m_roll;
     return *this;
 }
 
 Float3 &Float3::operator-=(const Float3 &rhs) {
-    m_x -= rhs.m_x;
-    m_y -= rhs.m_y;
-    m_z -= rhs.m_z;
+    m_yaw -= rhs.m_yaw;
+    m_pitch -= rhs.m_pitch;
+    m_roll -= rhs.m_roll;
     return *this;
 }
 
 Float3 &Float3::operator*=(const Float3 &rhs) {
-    m_x *= rhs.m_x;
-    m_y *= rhs.m_y;
-    m_z *= rhs.m_z;
+    m_yaw *= rhs.m_yaw;
+    m_pitch *= rhs.m_pitch;
+    m_roll *= rhs.m_roll;
     return *this;
 }
 
 Float3 &Float3::operator/=(const Float3 &rhs) {
-    m_x /= rhs.m_x;
-    m_y /= rhs.m_y;
-    m_z /= rhs.m_z;
+    m_yaw /= rhs.m_yaw;
+    m_pitch /= rhs.m_pitch;
+    m_roll /= rhs.m_roll;
     return *this;
 }
 
 Float3 &Float3::operator*=(float rhs_scalar) {
-    m_x *= rhs_scalar;
-    m_y *= rhs_scalar;
-    m_z *= rhs_scalar;
+    m_yaw *= rhs_scalar;
+    m_pitch *= rhs_scalar;
+    m_roll *= rhs_scalar;
     return *this;
 }
 
 Float3 &Float3::operator/=(float rhs_scalar) {
-    m_x /= rhs_scalar;
-    m_y /= rhs_scalar;
-    m_z /= rhs_scalar;
+    m_yaw /= rhs_scalar;
+    m_pitch /= rhs_scalar;
+    m_roll /= rhs_scalar;
     return *this;
 }
 
 Float3 Float3::operator+(const Float3 &rhs) const {
-    return {m_x + rhs.m_x, m_y + rhs.m_y, m_z + rhs.m_z};
+    return {m_yaw + rhs.m_yaw, m_pitch + rhs.m_pitch, m_roll + rhs.m_roll};
 }
 
 Float3 Float3::operator-(const Float3 &rhs) const {
-    return {m_x - rhs.m_x, m_y - rhs.m_y, m_z - rhs.m_z};
+    return {m_yaw - rhs.m_yaw, m_pitch - rhs.m_pitch, m_roll - rhs.m_roll};
 }
 
 Float3 Float3::operator*(const Float3 &rhs) const {
-    return {m_x * rhs.m_x, m_y * rhs.m_y, m_z * rhs.m_z};
+    return {m_yaw * rhs.m_yaw, m_pitch * rhs.m_pitch, m_roll * rhs.m_roll};
 }
 
 Float3 Float3::operator/(const Float3 &rhs) const {
-    return {m_x / rhs.m_x, m_y / rhs.m_y, m_z / rhs.m_z};
+    return {m_yaw / rhs.m_yaw, m_pitch / rhs.m_pitch, m_roll / rhs.m_roll};
 }
 
 Float3 Float3::operator*(float rhs_scalar) const {
-    return {m_x * rhs_scalar, m_y * rhs_scalar, m_z * rhs_scalar};
+    return {m_yaw * rhs_scalar, m_pitch * rhs_scalar, m_roll * rhs_scalar};
 }
 
 Float3 Float3::operator/(float rhs_scalar) const {
-    return {m_x / rhs_scalar, m_y / rhs_scalar, m_z / rhs_scalar};
+    return {m_yaw / rhs_scalar, m_pitch / rhs_scalar, m_roll / rhs_scalar};
 }
 
 const float &Float3::operator[](int axis) const {
     switch (axis) {
         case 0:
-            return m_x;
+            return m_yaw;
         case 1:
-            return m_y;
+            return m_pitch;
         case 2:
-            return m_z;
+            return m_roll;
         default:
-            return m_x; // for lack of a resolution, other than crashing
+            return m_yaw; // for lack of a resolution, other than crashing
     }
 }
 
 float &Float3::operator[](int axis) {
     switch (axis) {
         case 0:
-            return m_x;
+            return m_yaw;
         case 1:
-            return m_y;
+            return m_pitch;
         case 2:
-            return m_z;
+            return m_roll;
         default:
-            return m_x; // for lack of a resolution, other than crashing
+            return m_yaw; // for lack of a resolution, other than crashing
     }
 }
 
 bool Float3::operator==(const Float3 &rhs) const {
-    return (m_x == rhs.m_x) && (m_y == rhs.m_y) && (m_z == rhs.m_z);
+    return (m_yaw == rhs.m_yaw) && (m_pitch == rhs.m_pitch) && (m_roll == rhs.m_roll);
 }
 
 bool Float3::operator!=(const Float3 &rhs) const {
-    return (m_x != rhs.m_x) || (m_y != rhs.m_y) || (m_z != rhs.m_z);
+    return (m_yaw != rhs.m_yaw) || (m_pitch != rhs.m_pitch) || (m_roll != rhs.m_roll);
 }
 
 Float3 Float3::operator+(float rhs_scalar) const {
-    return {m_x + rhs_scalar, m_y + rhs_scalar, m_z + rhs_scalar};
+    return {m_yaw + rhs_scalar, m_pitch + rhs_scalar, m_roll + rhs_scalar};
 }
 
 Float3 Float3::operator-(float rhs_scalar) const {
-    return {m_x - rhs_scalar, m_y - rhs_scalar, m_z - rhs_scalar};
+    return {m_yaw - rhs_scalar, m_pitch - rhs_scalar, m_roll - rhs_scalar};
 }

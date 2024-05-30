@@ -9,7 +9,7 @@ class Float3 {
 public:
     Float3();
     Float3(float component);
-    Float3(float x, float y, float z);
+    Float3(float yaw, float pitch, float roll);
 
     /**
      * @brief Get the length of this Float3
@@ -54,7 +54,7 @@ public:
 
     /**
      * @brief Get the string representation of this Float3
-     * @return string of the format "Float3(`x-component`, `y-component`, `z-component`)"
+     * @return string of the format "Float3(`yaw-component`, `pitch-component`, `roll-component`)"
      */
     std::string ToString() const;
     
@@ -101,9 +101,9 @@ public:
     Float3 operator/(float scalar) const;
 
 private:
-    float m_x;
-    float m_y;
-    float m_z;
+    float m_yaw;
+    float m_pitch;
+    float m_roll;
 };
 
 } // namespace Mach1

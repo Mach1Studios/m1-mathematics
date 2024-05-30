@@ -18,11 +18,11 @@ Quaternion::Quaternion(float qw, float qx, float qy, float qz) : m_qw(qw), m_qx(
 
 Quaternion Quaternion::FromEulerRadians(Float3 euler_vector) {
     // I shamelessly stole this code: https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
-    // This is in YXZ format
-
-    float a = euler_vector[1] * 0.5f;
-    float b = euler_vector[0] * 0.5f;
-    float c = euler_vector[2] * 0.5f;
+    
+    // we expect a Yaw,Pitch,Roll index order
+    float a = euler_vector[1] * 0.5f; // pitch
+    float b = euler_vector[0] * 0.5f; // yaw
+    float c = euler_vector[2] * 0.5f; // roll
 
     float cos_a = cos(a);
     float sin_a = sin(a);
@@ -47,7 +47,7 @@ Quaternion Quaternion::FromEulerDegrees(Float3 euler_vector) {
 
 Float3 Quaternion::ToEulerRadians() {
     // I shamelessly stole this rotation matrix: https://en.wikipedia.org/wiki/Euler_angles#Rotation_matrix
-    // This is in YXZ format
+    // we return a Yaw,Pitch,Roll index order
 
     float s = 2.0f / LengthSquared();
 
@@ -80,18 +80,18 @@ Float3 Quaternion::ToEulerRadians() {
     float p_zz = 1.0f - (xx + yy);
 
     if (p_yz >= MathUtility::FLOAT_COMPARISON_ONE_MINUS_EPSILON) {
-        return {-M_PI_2, -atan2(p_xy, p_xx), 0};
+        return {-atan2(p_xy, p_xx), -M_PI_2, 0};
     }
 
     if (p_yz <= -MathUtility::FLOAT_COMPARISON_ONE_MINUS_EPSILON) {
-        return {M_PI_2, atan2(p_xy, p_xx), 0};
+        return {atan2(p_xy, p_xx), M_PI_2, 0};
     }
 
     if (p_yx == 0 && p_xy == 0 && p_xz == 0 && p_zx == 0 && p_xx == 1) {
-        return {atan2(-p_yz, p_yy), 0, 0};
+        return {0, atan2(-p_yz, p_yy), 0};
     }
-
-    return {asin(-p_yz), atan2(p_xz, p_zz), atan2(p_yx, p_yy)};
+    
+    return {atan2(p_xz, p_zz), asin(-p_yz), atan2(p_yx, p_yy)};
 }
 
 Float3 Quaternion::ToEulerDegrees() {
@@ -108,7 +108,6 @@ bool Quaternion::IsApproximatelyEqual(const Quaternion &rhs) const {
 Quaternion Quaternion::Normalized() const {
     return *this / Length();
 }
-
 
 Quaternion Quaternion::Inversed() const {
     return {m_qw, -m_qx, -m_qy, -m_qz};

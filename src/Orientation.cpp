@@ -1,10 +1,8 @@
 #include "m1_mathematics/Orientation.h"
 
 using namespace Mach1;
-using namespace Mach1;
 
 Orientation::Orientation() : m_local(), m_parent() {
-
 }
 
 Quaternion Orientation::GetGlobalRotationAsQuaternion() const {
@@ -57,5 +55,3 @@ void Orientation::SetGlobalRotation(Quaternion quaternion) {
     Reset();
     SetRotation(quaternion);
 }
-
-

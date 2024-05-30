@@ -29,39 +29,39 @@ public:
     Quaternion GetGlobalRotationAsQuaternion() const;
 
     /**
-     * @brief Rotate this Orientation's local Quaternion by the specified Euler degrees Float3
+     * @brief Rotate this Orientation's local Quaternion by the specified Euler degrees Float3 adding it to the current rotation
      */
     void ApplyRotationDegrees(Float3 rotationDegrees);
 
     /**
-     * @brief Rotate this Orientation's local Quaternion by the specified Euler radians Float3
+     * @brief Rotate this Orientation's local Quaternion by the specified Euler radians Float3 adding it to the current rotation
      */
     void ApplyRotation(Float3 rotationRadians);
 
     /**
-     * @brief Rotate this Orientation's local Quaternion by the specified Quaternion
+     * @brief Rotate this Orientation's local Quaternion by the specified Quaternion adding it to the current rotation
      */
     void ApplyRotation(Quaternion quaternion);
 
     /**
-     * @brief Set this Orientation's local Quaternion to the specified Euler radians Float3's equivalent Quaternion
+     * @brief Set this Orientation's local Quaternion to the specified Euler radians Float3's equivalent Quaternion, this still incorporates recentered offsets
      */
     void SetRotation(Float3 rotationRadians);
 
     /**
-     * @brief Set this Orientation's local Quaternion to the specified Quaternion
+     * @brief Set this Orientation's local Quaternion to the specified Quaternion, this still incorporates recentered offsets
      */
     void SetRotation(Quaternion quaternion);
 
     /**
      * @brief Set this Orientation's local Quaternion to the specified Euler radians Float3 equivalent Quaternion
-     * and set the parent Quaternion to zero
+     * and set the parent Quaternion to zero, resetting all offsets from recentering
      */
     void SetGlobalRotation(Float3 rotationRadians);
 
     /**
      * @brief Set this Orientation's local Quaternion to the specified Quaternion
-     * and set the parent Quaternion to zero
+     * and set the parent Quaternion to zero, resetting all offsets from recentering
      */
     void SetGlobalRotation(Quaternion quaternion);
 
