@@ -29,9 +29,32 @@ public:
     Quaternion GetGlobalRotationAsQuaternion() const;
 
     /**
+     * @brief Rotate this Orientation's local Quaternion by the specified Quaternion adding it to the current rotation
+     */
+    void ApplyRotation(Quaternion quaternion);
+
+    /**
      * @brief Rotate this Orientation's local Quaternion by the specified Euler degrees Float3 adding it to the current rotation
      */
     void ApplyRotationDegrees(Float3 rotationDegrees);
+
+    /**
+     * @brief Rotate this Orientation's local Quaternion by the specified Euler degrees around the Yaw axis only
+     * adding it to the current rotation
+     */
+    void ApplyRotationDegrees_YawAxis(float yaw);
+    
+    /**
+     * @brief Rotate this Orientation's local Quaternion by the specified Euler degrees around the Pitch axis only
+     * adding it to the current rotation
+     */
+    void ApplyRotationDegrees_PitchAxis(float pitch);
+    
+    /**
+     * @brief Rotate this Orientation's local Quaternion by the specified Euler degrees around the Roll axis only
+     * adding it to the current rotation
+     */
+    void ApplyRotationDegrees_RollAxis(float roll);
 
     /**
      * @brief Rotate this Orientation's local Quaternion by the specified Euler radians Float3 adding it to the current rotation
@@ -39,10 +62,23 @@ public:
     void ApplyRotation(Float3 rotationRadians);
 
     /**
-     * @brief Rotate this Orientation's local Quaternion by the specified Quaternion adding it to the current rotation
+     * @brief Rotate this Orientation's local Quaternion by the specified Euler radians around the Yaw axis only
+     * adding it to the current rotation
      */
-    void ApplyRotation(Quaternion quaternion);
-
+    void ApplyRotation_YawAxis(float yaw);
+    
+    /**
+     * @brief Rotate this Orientation's local Quaternion by the specified Euler radians around the Pitch axis only
+     * adding it to the current rotation
+     */
+    void ApplyRotation_PitchAxis(float pitch);
+    
+    /**
+     * @brief Rotate this Orientation's local Quaternion by the specified Euler radians around the Roll axis only
+     * adding it to the current rotation
+     */
+    void ApplyRotation_RollAxis(float roll);
+    
     /**
      * @brief Set this Orientation's local Quaternion to the specified Euler radians Float3's equivalent Quaternion, this still incorporates recentered offsets
      */

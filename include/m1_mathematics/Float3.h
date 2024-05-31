@@ -40,6 +40,12 @@ public:
      * @return Float3, whose components are <= those of max and >= those of min
      */
     Float3 Clamped(Float3 min, Float3 max) const;
+    
+    /**
+     * @brief Create a Float3, whose components are always modulus within the min and max components of the given Float3 instances
+     * @return Float3, whose components are the remainder <= those of max and >= those of min
+     */
+    Float3 Modulus(Float3 min_fmod, Float3 max_fmod) const;
 
     /**
      * @brief Create a Float3, whose components are this Float3's components, proportionally remapped from the

@@ -24,10 +24,16 @@ void Orientation::ApplyRotation(Quaternion quaternion) {
 void Orientation::ApplyRotationDegrees(Float3 rotationDegrees) {
     return ApplyRotation(Quaternion::FromEulerDegrees(rotationDegrees));
 }
+void Orientation::ApplyRotationDegrees_YawAxis(float yaw) { return ApplyRotation(Quaternion::FromEulerDegrees({yaw, 0, 0})); }
+void Orientation::ApplyRotationDegrees_PitchAxis(float pitch) { return ApplyRotation(Quaternion::FromEulerDegrees({0, pitch, 0})); }
+void Orientation::ApplyRotationDegrees_RollAxis(float roll) { return ApplyRotation(Quaternion::FromEulerDegrees({0, 0, roll})); }
 
 void Orientation::ApplyRotation(Float3 rotationRadians) {
     return ApplyRotation(Quaternion::FromEulerRadians(rotationRadians));
 }
+void Orientation::ApplyRotation_YawAxis(float yaw) { return ApplyRotation(Quaternion::FromEulerRadians({yaw, 0, 0})); }
+void Orientation::ApplyRotation_PitchAxis(float pitch) { return ApplyRotation(Quaternion::FromEulerRadians({0, pitch, 0})); }
+void Orientation::ApplyRotation_RollAxis(float roll) { return ApplyRotation(Quaternion::FromEulerRadians({0, 0, roll})); }
 
 void Orientation::Recenter() {
     m_parent = m_local.Inversed();

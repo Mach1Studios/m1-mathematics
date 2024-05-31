@@ -29,6 +29,22 @@ Float3 Float3::Normalized() const {
     return *this / length;
 }
 
+Float3 Float3::Clamped(Float3 min, Float3 max) const {
+    return {
+        std::clamp(m_yaw, min.m_yaw, max.m_yaw),
+        std::clamp(m_pitch, min.m_pitch, max.m_pitch),
+        std::clamp(m_roll, min.m_roll, max.m_roll)
+    };
+}
+
+Float3 Float3::Modulus(Float3 min_fmod, Float3 max_fmod) const {
+    return {
+        // Performs modulus with entire range and then offsets the result by the minimum
+        (m_yaw > max_fmod.m_yaw) ? std::fmod(m_yaw, max_fmod.m_yaw - min_fmod.m_yaw) + min_fmod.m_yaw : std::fmod(m_yaw, max_fmod.m_yaw - min_fmod.m_yaw),
+        (m_pitch > max_fmod.m_pitch) ? std::fmod(m_pitch, max_fmod.m_pitch - min_fmod.m_pitch) + min_fmod.m_pitch : std::fmod(m_pitch, max_fmod.m_pitch - min_fmod.m_pitch),
+        (m_roll > max_fmod.m_roll) ? std::fmod(m_roll, max_fmod.m_roll - min_fmod.m_roll) + min_fmod.m_roll : std::fmod(m_roll, max_fmod.m_roll - min_fmod.m_roll)
+    };
+}
 
 Float3 Float3::Map(float from_min, float from_max, float to_min, float to_max) {
     float from_range = from_max - from_min;
@@ -39,15 +55,6 @@ Float3 Float3::Map(float from_min, float from_max, float to_min, float to_max) {
 
     float to_range = to_max - to_min;
     return ((*this - from_min) / from_range * to_range) + to_min;
-}
-
-
-Float3 Float3::Clamped(Float3 min, Float3 max) const {
-    return {
-            std::clamp(m_yaw, min.m_yaw, max.m_yaw),
-            std::clamp(m_pitch, min.m_pitch, max.m_pitch),
-            std::clamp(m_roll, min.m_roll, max.m_roll)
-    };
 }
 
 Float3 Float3::EulerDegrees() const {
