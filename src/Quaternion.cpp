@@ -131,6 +131,22 @@ std::string Quaternion::ToString() const {
     return s.str();
 }
 
+float Quaternion::GetW() const {
+    return m_qw;
+}
+
+float Quaternion::GetX() const {
+    return m_qx;
+}
+
+float Quaternion::GetY() const {
+    return m_qy;
+}
+
+float Quaternion::GetZ() const {
+    return m_qz;
+}
+
 // =====================================================================================================================
 // ===================================================== OPERATORS =====================================================
 // =====================================================================================================================

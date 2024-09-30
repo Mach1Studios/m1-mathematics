@@ -74,6 +74,26 @@ public:
      */
     std::string ToString() const;
 
+    /**
+     * @brief Get the W
+     */
+    float GetW() const;
+    
+    /**
+     * @brief Get the X
+     */
+    float GetX() const;
+    
+    /**
+     * @brief Get the Y
+     */
+    float GetY() const;
+
+    /**
+     * @brief Get the Z value
+     */
+    float GetZ() const;
+
     void operator*=(float scalar);
     void operator/=(float scalar);
     void operator*=(const Quaternion &rhs);
