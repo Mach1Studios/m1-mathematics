@@ -58,17 +58,17 @@ TEST(OrientationTests, RotationApplication) {
     Float3 testVec = Float3{45, 30, -10};
     Float3 testVecRads = testVec.EulerRadians();
 
-    auto pitch = testVecRads[0];
-    auto yaw = testVecRads[1];
+    auto yaw = testVecRads[0];
+    auto pitch = testVecRads[1];
     auto roll = testVecRads[2];
 
-    Float3 euler_p(pitch, 0.0, 0.0);
-    Float3 euler_y(0.0, yaw, 0.0);
+    Float3 euler_y(yaw, 0.0, 0.0);
+    Float3 euler_p(0.0, pitch, 0.0);
     Float3 euler_r(0.0, 0.0, roll);
-    Float3 euler_yp(pitch, yaw, 0.0);
-    Float3 euler_yr(0.0, yaw, roll);
-    Float3 euler_pr(pitch, 0.0, roll);
-    Float3 euler_ypr(pitch, yaw, roll);
+    Float3 euler_yp(yaw, pitch, 0.0);
+    Float3 euler_yr(yaw, 0.0, roll);
+    Float3 euler_pr(0.0, pitch, roll);
+    Float3 euler_ypr(yaw, pitch, roll);
 
     Quaternion q_yp = Quaternion::FromEulerRadians(euler_yp);
     Quaternion q_yr = Quaternion::FromEulerRadians(euler_yr);

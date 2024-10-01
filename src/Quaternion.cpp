@@ -17,28 +17,26 @@ Quaternion::Quaternion() : m_qw(1.0), m_qx(0.0), m_qy(0.0), m_qz(0.0) {}
 Quaternion::Quaternion(float qw, float qx, float qy, float qz) : m_qw(qw), m_qx(qx), m_qy(qy), m_qz(qz) {}
 
 Quaternion Quaternion::FromEulerRadians(Float3 euler_vector) {
-    // I shamelessly stole this code: https://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles
-    
-    // we expect a Yaw,Pitch,Roll index order
-    float a = euler_vector[1] * 0.5f; // pitch
-    float b = euler_vector[0] * 0.5f; // yaw
-    float c = euler_vector[2] * 0.5f; // roll
+    // Convert to half angles
+    float yaw = euler_vector[0] * 0.5f;
+    float pitch = euler_vector[1] * 0.5f;
+    float roll = euler_vector[2] * 0.5f;
 
-    float cos_a = cos(a);
-    float sin_a = sin(a);
+    // Compute cosines and sines of half angles
+    float cosYaw = cos(yaw);
+    float sinYaw = sin(yaw);
+    float cosPitch = cos(pitch);
+    float sinPitch = sin(pitch);
+    float cosRoll = cos(roll);
+    float sinRoll = sin(roll);
 
-    float cos_b = cos(b);
-    float sin_b = sin(b);
+    // Quaternion components computed in Yaw-Pitch-Roll order (Z-Y-X)
+    float qw = cosYaw * cosPitch * cosRoll + sinYaw * sinPitch * sinRoll;
+    float qx = cosYaw * cosPitch * sinRoll - sinYaw * sinPitch * cosRoll;
+    float qy = cosYaw * sinPitch * cosRoll + sinYaw * cosPitch * sinRoll;
+    float qz = sinYaw * cosPitch * cosRoll - cosYaw * sinPitch * sinRoll;
 
-    float cos_c = cos(c);
-    float sin_c = sin(c);
-
-    return {
-            sin_a * sin_b * sin_c + cos_a * cos_b * cos_c,
-            sin_a * cos_b * sin_c + cos_a * sin_b * cos_c,
-            sin_a * cos_b * cos_c - cos_a * sin_b * sin_c,
-            -sin_a * sin_b * cos_c + cos_a * cos_b * sin_c,
-    };
+    return { qw, qx, qy, qz };
 }
 
 Quaternion Quaternion::FromEulerDegrees(Float3 euler_vector) {
@@ -46,52 +44,34 @@ Quaternion Quaternion::FromEulerDegrees(Float3 euler_vector) {
 }
 
 Float3 Quaternion::ToEulerRadians() {
-    // I shamelessly stole this rotation matrix: https://en.wikipedia.org/wiki/Euler_angles#Rotation_matrix
-    // we return a Yaw,Pitch,Roll index order
+    // Normalize the quaternion
+    float norm = sqrt(m_qw * m_qw + m_qx * m_qx + m_qy * m_qy + m_qz * m_qz);
+    float qw = m_qw / norm;
+    float qx = m_qx / norm;
+    float qy = m_qy / norm;
+    float qz = m_qz / norm;
 
-    float s = 2.0f / LengthSquared();
+    // Precompute repeated values
+    float sinr_cosp = 2.0f * (qw * qx + qy * qz);
+    float cosr_cosp = 1.0f - 2.0f * (qx * qx + qy * qy);
 
-    float xs = m_qx * s;
-    float ys = m_qy * s;
-    float zs = m_qz * s;
+    float sinp = 2.0f * (qw * qy - qz * qx);
+    // Handle gimbal lock
+    float pitch;
+    if (fabs(sinp) >= 1.0f)
+        pitch = copysign(M_PI_2, sinp); // Use 90 degrees if out of range
+    else
+        pitch = asin(sinp);
 
-    float wx = m_qw * xs;
-    float wy = m_qw * ys;
-    float wz = m_qw * zs;
+    float siny_cosp = 2.0f * (qw * qz + qx * qy);
+    float cosy_cosp = 1.0f - 2.0f * (qy * qy + qz * qz);
 
-    float xx = m_qx * xs;
-    float xy = m_qx * ys;
-    float xz = m_qx * zs;
+    // Compute Euler angles
+    float yaw = atan2(siny_cosp, cosy_cosp);   // Yaw (ψ)
+    float roll = atan2(sinr_cosp, cosr_cosp);  // Roll (φ)
 
-    float yy = m_qy * ys;
-    float yz = m_qy * zs;
-    float zz = m_qz * zs;
-
-    float p_xx = 1.0f - (yy + zz);
-    float p_xy = xy - wz;
-    float p_xz = xz + wy;
-
-    float p_yx = xy + wz;
-    float p_yy = 1.0f - (xx + zz);
-    float p_yz = yz - wx;
-
-    float p_zx = xz - wy;
-    float p_zy = yz + wx;
-    float p_zz = 1.0f - (xx + yy);
-
-    if (p_yz >= MathUtility::FLOAT_COMPARISON_ONE_MINUS_EPSILON) {
-        return {-atan2(p_xy, p_xx), -M_PI_2, 0};
-    }
-
-    if (p_yz <= -MathUtility::FLOAT_COMPARISON_ONE_MINUS_EPSILON) {
-        return {atan2(p_xy, p_xx), M_PI_2, 0};
-    }
-
-    if (p_yx == 0 && p_xy == 0 && p_xz == 0 && p_zx == 0 && p_xx == 1) {
-        return {0, atan2(-p_yz, p_yy), 0};
-    }
-    
-    return {atan2(p_xz, p_zz), asin(-p_yz), atan2(p_yx, p_yy)};
+    // Return angles in Yaw-Pitch-Roll order
+    return { yaw, pitch, roll };
 }
 
 Float3 Quaternion::ToEulerDegrees() {
